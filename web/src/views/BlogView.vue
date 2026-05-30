@@ -3,7 +3,9 @@ import { RouterLink } from 'vue-router'
 </script>
 
 <template>
-  <div class="blog">
+  <RouterLink class="blog__back" to="/">← 返回主页</RouterLink>
+  <h1 class="blog__title">我还在写😭，sorry</h1>
+  <!-- <div class="blog">
     <header class="blog__header">
       <RouterLink class="blog__back" to="/">← 返回主页</RouterLink>
       <h1 class="blog__title">个人博客</h1>
@@ -19,7 +21,7 @@ import { RouterLink } from 'vue-router'
         <p>可考虑增加 <code>/blog/:slug</code> 路由以展示文章详情。</p>
       </article>
     </main>
-  </div>
+  </div> -->
 </template>
 
 <style scoped src="../styles/pages/blog.css"></style>
