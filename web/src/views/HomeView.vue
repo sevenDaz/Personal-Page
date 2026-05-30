@@ -4,7 +4,7 @@ import ProfileSection from '../components/home/ProfileSection.vue'
 import SiteNav from '../components/home/SiteNav.vue'
 import StatCards from '../components/home/StatCards.vue'
 
-const videoSrc = '/mp4/Fall_Ember.mp4'
+const videoSrc = 'mp4/Fall_Ember.mp4'
 </script>
 
 <template>
