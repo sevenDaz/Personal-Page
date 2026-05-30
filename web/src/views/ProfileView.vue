@@ -5,7 +5,7 @@ import ExperienceCard from '../components/home/ExperienceCard.vue'
 import TagsCard from '../components/home/PersonalCard.vue'
 import HobbiesCard from '../components/home/HobbiesCard.vue'
 
-const videoSrc = '/mp4/saber_profile.mp4'
+const videoSrc = 'mp4/saber_profile.mp4'
 </script>
 
 <template>

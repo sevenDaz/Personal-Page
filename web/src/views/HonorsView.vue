@@ -2,7 +2,7 @@
 import SiteNav from '../components/home/SiteNav.vue'
 import { ref, onMounted } from 'vue'
 
-const videoSrc = '/mp4/subaru_honor.mp4'
+const videoSrc = 'mp4/subaru_honor.mp4'
 
 const currentSlide = ref(0)
 const autoPlayInterval = ref()
@@ -11,43 +11,43 @@ const honors = [
   {
     id: 1,
     title: '泰迪杯数据挖掘挑战赛',
-    image: '/images/honors/泰迪杯.jpg',
+    image: 'images/honors/泰迪杯.jpg',
     description: '泰迪杯数据挖掘挑战赛三等奖'
   },
   {
     id: 2,
     title: '大学生创新创业训练计划',
-    image: '/images/honors/大创结题证书.jpg',
+    image: 'images/honors/大创结题证书.jpg',
     description: '大学生创新创业训练计划项目结题证书'
   },
   {
     id: 3,
     title: '创新创业标兵',
-    image: '/images/honors/创新创业标兵.jpg',
+    image: 'images/honors/创新创业标兵.jpg',
     description: '创新创业标兵荣誉称号'
   },
   {
     id: 4,
     title: '微信小程序开发大赛',
-    image: '/images/honors/微信小程序大赛.jpg',
+    image: 'images/honors/微信小程序大赛.jpg',
     description: '微信小程序开发大赛二等奖'
   },
   {
     id: 5,
     title: '实验室成员',
-    image: '/images/honors/实验室成员.jpg',
+    image: 'images/honors/实验室成员.jpg',
     description: '实验室优秀成员表彰'
   },
   {
     id: 6,
     title: '软件著作权',
-    image: '/images/honors/软著-1.jpg',
+    image: 'images/honors/软著-1.jpg',
     description: '基于深度学习的汉服识别系统软件著作权'
   },
   {
     id: 7,
     title: '软件著作权',
-    image: '/images/honors/软著-2.jpg',
+    image: 'images/honors/软著-2.jpg',
     description: '基于深度学习的多种诗歌展示平台软件著作权'
   },
 ]
