@@ -1,0 +1,68 @@
+/* Blog route (/blog) */
+.blog {
+  min-height: 100vh;
+  padding: 2rem clamp(1rem, 4vw, 2rem) 4rem;
+  background: var(--color-background);
+  color: var(--color-text);
+}
+
+.blog__header {
+  max-width: 48rem;
+  margin: 0 auto 2rem;
+}
+
+.blog__back {
+  display: inline-block;
+  margin-bottom: 1rem;
+  font-size: 0.9375rem;
+  color: var(--color-heading);
+  text-decoration: none;
+}
+
+.blog__back:hover {
+  text-decoration: underline;
+}
+
+.blog__title {
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  font-weight: 700;
+  color: var(--color-heading);
+}
+
+.blog__intro {
+  margin-top: 0.5rem;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+.blog__main {
+  max-width: 48rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.blog__card {
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--color-border);
+  background: var(--color-background-soft);
+}
+
+.blog__card h2 {
+  font-size: 1.125rem;
+  margin-bottom: 0.5rem;
+  color: var(--color-heading);
+}
+
+.blog__card p {
+  line-height: 1.65;
+}
+
+.blog__card code {
+  font-size: 0.875em;
+  padding: 0.15em 0.4em;
+  border-radius: 0.35rem;
+  background: var(--color-background-mute);
+}
