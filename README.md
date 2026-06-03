@@ -1,6 +1,8 @@
 # 个人网页项目
 
 这是一个学习使用Vibe Coding的个人网站项目，使用Vue.js构建，用于展示个人技能、荣誉、经历和项目等信息。
+目前页面挂载在GithubPages页面，后续计划完善功能，部署到个人服务器，目前进度网站IPC备案中
+- Github Pages访问链接：https://sevendaz.github.io/Personal-Page/
 
 ## 项目概述
 
