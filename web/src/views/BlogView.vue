@@ -1,27 +1,59 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router'
+import SiteNav from '../components/home/SiteNav.vue'
+import BlogList from '../components/blog/BlogList.vue'
 </script>
 
 <template>
-  <RouterLink class="blog__back" to="/">← 返回主页</RouterLink>
-  <h1 class="blog__title">我还在写😭，sorry</h1>
-  <!-- <div class="blog">
-    <header class="blog__header">
-      <RouterLink class="blog__back" to="/">← 返回主页</RouterLink>
-      <h1 class="blog__title">个人博客</h1>
-      <p class="blog__intro">骨架页面：稍后在此接入文章列表与详情路由。</p>
-    </header>
-    <main class="blog__main">
-      <article class="blog__card">
-        <h2>占位文章标题</h2>
-        <p>这是一篇示例卡片。你可以在 <code>BlogView.vue</code> 中替换为真实列表或 Markdown 渲染。</p>
-      </article>
-      <article class="blog__card">
-        <h2>占位文章标题（二）</h2>
-        <p>可考虑增加 <code>/blog/:slug</code> 路由以展示文章详情。</p>
-      </article>
+  <div class="blog-page">
+    <SiteNav />
+
+    <main class="blog-content">
+      <div class="blog-container">
+        <BlogList />
+      </div>
     </main>
-  </div> -->
+  </div>
+  <!-- 备案号 -->
+  <div class="备案号">
+  <a href="https://beian.miit.gov.cn/" target="_blank" class="备案号-link">
+    黔ICP备2021010099号-3
+  </a>
+</div>
 </template>
 
-<style scoped src="../styles/pages/blog.css"></style>
+<style scoped>
+.blog-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.blog-content {
+  padding: 2rem 0;
+}
+
+.blog-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* 备案号样式 */
+.备案号 {
+  margin-top: 3rem;
+  padding: 1rem;
+  text-align: center;
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.备案号-link {
+  color: #666;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.备案号-link:hover {
+  color: #3b82f6;
+  text-decoration: underline;
+}
+</style>

@@ -30,7 +30,7 @@ const honors = [
     id: 4,
     title: '微信小程序开发大赛',
     image: 'images/honors/微信小程序大赛.jpg',
-    description: '微信小程序开发大赛二等奖'
+    description: '微信小程序开发大赛三等奖'
   },
   {
     id: 5,
