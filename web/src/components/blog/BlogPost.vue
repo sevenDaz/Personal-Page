@@ -4,7 +4,6 @@
       <div class="blog-post-meta">
         <span class="blog-category">{{ post.category }}</span>
         <span class="blog-date">{{ formatDate(post.date) }}</span>
-        <span class="blog-views">阅读量: {{ post.views }}</span>
       </div>
       <h1 class="blog-post-title">{{ post.title }}</h1>
       <div class="blog-post-tags">
@@ -18,8 +17,11 @@
       </div>
     </div>
 
-    <div class="blog-post-content">
+    <div class="blog-post-content" v-if="post.content">
       <MarkdownRenderer :content="post.content" />
+    </div>
+    <div class="blog-post-loading" v-else>
+      <p>加载中...</p>
     </div>
 
     <div class="blog-post-footer">
@@ -74,20 +76,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import MarkdownRenderer from './MarkdownRenderer.vue'
 import { useRoute } from 'vue-router'
 
-interface BlogPost {
+interface PostMeta {
   id: string
   title: string
-  content: string
+  excerpt: string
   date: string
-  category: '技术' | '生活'
+  category: string
   tags: string[]
-  views: number
+  file: string
+}
+
+interface PostData extends PostMeta {
+  content: string
   likes: number
-  excerpt?: string
 }
 
 interface Comment {
@@ -99,216 +104,58 @@ interface Comment {
 
 const route = useRoute()
 const postId = route.params.id as string
+const baseUrl = import.meta.env.BASE_URL
 
-// 辅助函数：解析 frontmatter
-const parseFrontmatter = (content: string) => {
-  const match = content.match(/^---[\s\S]*?---/)
-  if (!match) return {}
-
-  const frontmatterContent = match[0].replace(/^---\s*/, '').replace(/\s*---$/, '')
-  const lines = frontmatterContent.split('\n')
-  const result: any = {}
-
-  lines.forEach(line => {
-    const [key, ...valueParts] = line.split(':')
-    if (key && valueParts.length > 0) {
-      const value = valueParts.join(':').trim()
-      try {
-        result[key.trim()] = JSON.parse(value)
-      } catch {
-        result[key.trim()] = value
-      }
-    }
-  })
-
-  return result
-}
-
-// 辅助函数：从文件加载内容
-const fetchFileContent = async (filePath: string) => {
-  try {
-    const response = await fetch(filePath)
-    if (!response.ok) throw new Error('文件加载失败')
-    return await response.text()
-  } catch (error) {
-    console.error('加载文件失败:', error)
-    return ''
-  }
-}
-
-// 从文件系统加载文章内容
-const loadPostContent = async (postId: string) => {
-  try {
-    const posts = await loadPosts()
-    const post = posts.find(p => p.id === postId)
-    if (!post) return null
-
-    const categoryPath = `public/markdown/${post.category}`
-    const content = await fetchFileContent(`${categoryPath}/${postId}.md`)
-
-    // 解析 frontmatter
-    const frontmatter = parseFrontmatter(content)
-    const bodyContent = content.replace(/^---[\s\S]*?---/, '')
-
-    return {
-      ...post,
-      content: bodyContent,
-      title: frontmatter.title || post.title,
-      date: frontmatter.date || post.date,
-      tags: frontmatter.tags || post.tags,
-      views: post.views,
-      likes: post.likes
-    }
-  } catch (error) {
-    console.error('加载文章内容失败:', error)
-    return null
-  }
-}
-
-// 从文件系统加载文章列表
-const loadPosts = async () => {
-  const postsData: BlogPost[] = []
-
-  try {
-    // 获取所有分类
-    const categories = ['技术', '生活']
-
-    for (const category of categories) {
-      // 读取分类文件夹
-      const categoryPath = `public/markdown/${category}`
-      const files = await fetchFiles(categoryPath)
-
-      for (const file of files) {
-        const content = await fetchFileContent(categoryPath + '/' + file)
-
-        // 解析 frontmatter
-        const frontmatter = parseFrontmatter(content)
-        const bodyContent = content.replace(/^---[\s\S]*?---/, '')
-
-        postsData.push({
-          id: file.replace('.md', ''),
-          title: frontmatter.title || extractTitle(bodyContent),
-          excerpt: frontmatter.excerpt || extractExcerpt(bodyContent),
-          content: bodyContent,
-          date: frontmatter.date || extractDate(bodyContent) || '2024-01-01',
-          category: frontmatter.category || category,
-          tags: frontmatter.tags || extractTags(bodyContent) || [],
-          views: 0,
-          likes: 0
-        })
-      }
-    }
-
-    return postsData
-  } catch (error) {
-    console.error('加载文章失败:', error)
-    return []
-  }
-}
-
-// 辅助函数：提取标题
-const extractTitle = (content: string) => {
-  const match = content.match(/^# (.+)/m)
-  return match ? match[1] : '无标题'
-}
-
-// 辅助函数：提取摘要
-const extractExcerpt = (content: string) => {
-  const lines = content.split('\n')
-  let excerpt = ''
-  let inContent = false
-
-  for (const line of lines) {
-    if (line.startsWith('# ')) continue // 跳过标题
-    if (line.trim() === '') continue // 跳过空行
-
-    if (!inContent) {
-      excerpt = line.trim()
-      inContent = true
-      break
-    }
-  }
-
-  return excerpt || '暂无摘要'
-}
-
-// 辅助函数：提取日期
-const extractDate = (content: string) => {
-  const datePatterns = [
-    /(\d{4}-\d{2}-\d{2})/, // YYYY-MM-DD
-    /(\d{4}年\d{1,2}月\d{1,2}日)/, // 中文日期
-    /(\d{1,2}\/\d{1,2}\/\d{4})/ // MM/DD/YYYY
-  ]
-
-  for (const pattern of datePatterns) {
-    const match = content.match(pattern)
-    if (match) return match[1]
-  }
-
-  return null
-}
-
-// 辅助函数：提取标签
-const extractTags = (content: string) => {
-  const tagPattern = /tags:\s*\[([^\]]+)\]/
-  const match = content.match(tagPattern)
-  if (match) {
-    return match[0].split(',').map(tag => tag.trim().replace(/['"]/g, ''))
-  }
-  return []
-}
-
-// 辅助函数：获取文件列表
-const fetchFiles = async (directory: string) => {
-  try {
-    const response = await fetch(`${directory}/`)
-    const text = await response.text()
-    const parser = new DOMParser()
-    const doc = parser.parseFromString(text, 'text/html')
-    const links = doc.querySelectorAll('a')
-
-    const files: string[] = []
-    links.forEach(link => {
-      const href = link.getAttribute('href')
-      if (href && href.endsWith('.md')) {
-        files.push(href)
-      }
-    })
-
-    return files
-  } catch (error) {
-    console.error('获取文件列表失败:', error)
-    return []
-  }
-}
-
-// 初始化文章数据
-const posts = ref<BlogPost[]>([])
-const post = ref<BlogPost>({
+const post = ref<PostData>({
   id: '',
-  title: '文章不存在',
-  content: '抱歉，您请求的文章不存在。',
+  title: '',
+  excerpt: '',
   date: '',
-  category: '技术',
+  category: '',
   tags: [],
-  views: 0,
-  likes: 0,
-  excerpt: ''
+  file: '',
+  content: '',
+  likes: 0
 })
 
-// 加载文章数据
 onMounted(async () => {
   try {
-    // 加载文章列表
-    posts.value = await loadPosts()
+    // 1. 从索引文件获取文章元信息
+    const indexRes = await fetch(`${baseUrl}markdown/posts.json`)
+    if (!indexRes.ok) throw new Error('加载文章索引失败')
+    const posts: PostMeta[] = await indexRes.json()
 
-    // 加载当前文章内容
-    const fullPost = await loadPostContent(postId)
-    if (fullPost) {
-      post.value = fullPost
+    const postMeta = posts.find(p => p.id === postId)
+    if (!postMeta) {
+      post.value = {
+        id: '',
+        title: '文章不存在',
+        excerpt: '',
+        date: '',
+        category: '',
+        tags: [],
+        file: '',
+        content: '抱歉，您请求的文章不存在。',
+        likes: 0
+      }
+      return
+    }
+
+    // 2. 填充元信息
+    post.value = { ...postMeta, content: '', likes: 0 }
+
+    // 3. 加载 markdown 文件内容
+    const filePath = postMeta.file.split('/').map(encodeURIComponent).join('/')
+    const contentRes = await fetch(`${baseUrl}markdown/${filePath}`)
+    if (contentRes.ok) {
+      let text = await contentRes.text()
+      // 去掉 frontmatter
+      text = text.replace(/^---[\s\S]*?---\s*/, '')
+      post.value.content = text
     }
   } catch (error) {
-    console.error('加载文章数据失败:', error)
+    console.error('加载文章失败:', error)
+    post.value.content = '加载文章时出错，请稍后重试。'
   }
 })
 
@@ -382,10 +229,6 @@ const submitComment = () => {
   color: #888;
 }
 
-.blog-views {
-  color: #888;
-}
-
 .blog-post-title {
   font-size: 2rem;
   margin-bottom: 1rem;
@@ -411,6 +254,12 @@ const submitComment = () => {
   line-height: 1.8;
   color: #333;
   margin-bottom: 2rem;
+}
+
+.blog-post-loading {
+  text-align: center;
+  padding: 2rem;
+  color: #888;
 }
 
 .blog-post-footer {
