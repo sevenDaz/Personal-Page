@@ -73,9 +73,11 @@ const router = useRouter()
 const posts = ref<BlogPost[]>([])
 const loading = ref(true)
 
+const baseUrl = import.meta.env.BASE_URL
+
 onMounted(async () => {
   try {
-    const response = await fetch('/markdown/posts.json')
+    const response = await fetch(`${baseUrl}markdown/posts.json`)
     if (response.ok) {
       posts.value = await response.json()
     }
