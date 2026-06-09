@@ -1,7 +1,8 @@
 <template>
   <div class="blog-list">
     <div class="blog-header">
-      <h1 class="blog-title">博客文章</h1>
+      <h1 class="blog-title">博客文章(Coding)</h1>
+      <h2>该页面正在Coding中</h2>
       <div class="blog-filters">
         <button
           v-for="category in categories"
