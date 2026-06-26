@@ -3,7 +3,7 @@ import { RouterLink } from 'vue-router'
 
 const profileRows = [
   { label: '毕业院校', value: '中南民族大学' },
-  { label: '所在城市', value: '湖北 武汉' },
+  { label: '所在城市', value: '广州 佛山' },
   { label: '年级', value: '24届毕业生' },
 ]
 
@@ -34,7 +34,7 @@ const socialLinks = [
     <img class="profile-card__avatar" src="/images/avater.jpg" alt="头像" />
 
     <h2 id="profile-title" class="profile-card__name">LyflatW</h2>
-    <p class="profile-card__tagline">一个傻逼，刚开始准备练级</p>
+    <p class="profile-card__tagline">偷得浮生半日闲，耕耘不负寸寸年。</p>
 
     <hr class="profile-card__divider" />
 
