@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import SiteNav from '../components/home/SiteNav.vue'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 
-const videoSrc = 'mp4/subaru_honor.mp4'
+const baseUrl = import.meta.env.BASE_URL
+const videoSrc = `${baseUrl}mp4/subaru_honor.mp4`
 
 const currentSlide = ref(0)
 const autoPlayInterval = ref()
@@ -77,6 +78,8 @@ const stopAutoPlay = () => {
 onMounted(() => {
   startAutoPlay()
 })
+
+onUnmounted(stopAutoPlay)
 </script>
 
 <template>
@@ -89,7 +92,7 @@ onMounted(() => {
         muted
         loop
         playsinline
-        preload="auto"
+        preload="metadata"
       />
       <div class="video-bg__overlay" />
     </div>
@@ -118,7 +121,7 @@ onMounted(() => {
               >
                 <div class="carousel-card">
                   <img
-                    :src="honor.image"
+                    :src="`${baseUrl}${honor.image}`"
                     :alt="honor.title"
                     class="carousel-image"
                   />
@@ -131,10 +134,10 @@ onMounted(() => {
             </div>
 
             <!-- Navigation Arrows -->
-            <button class="carousel-arrow prev" @click="prevSlide">
+            <button class="carousel-arrow prev" type="button" aria-label="上一项荣誉" @click="prevSlide">
               <span>&lt;</span>
             </button>
-            <button class="carousel-arrow next" @click="nextSlide">
+            <button class="carousel-arrow next" type="button" aria-label="下一项荣誉" @click="nextSlide">
               <span>&gt;</span>
             </button>
           </div>
@@ -144,8 +147,11 @@ onMounted(() => {
             <button
               v-for="(_, index) in honors"
               :key="index"
+              type="button"
               class="indicator"
               :class="{ active: currentSlide === index }"
+              :aria-label="`查看第 ${index + 1} 项荣誉`"
+              :aria-pressed="currentSlide === index"
               @click="goToSlide(index)"
             ></button>
           </div>

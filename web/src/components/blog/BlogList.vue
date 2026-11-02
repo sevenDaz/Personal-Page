@@ -15,9 +15,12 @@
       </div>
     </div>
 
-    <div class="blog-grid">
+    <div v-if="loading" class="blog-status" role="status">正在加载文章…</div>
+    <p v-else-if="!filteredPosts.length" class="blog-status">暂无该分类的文章。</p>
+
+    <div v-else class="blog-grid">
       <div
-        v-for="post in filteredPosts"
+        v-for="post in paginatedPosts"
         :key="post.id"
         class="blog-card"
         @click="goToPost(post.id)"
@@ -114,6 +117,11 @@ const totalPages = computed(() => {
   return Math.ceil(filteredPosts.value.length / postsPerPage)
 })
 
+const paginatedPosts = computed(() => {
+  const start = (currentPage.value - 1) * postsPerPage
+  return filteredPosts.value.slice(start, start + postsPerPage)
+})
+
 const setCurrentCategory = (category: string) => {
   currentCategory.value = category
   currentPage.value = 1
@@ -188,6 +196,12 @@ const formatDate = (dateString: string) => {
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
   margin-bottom: 3rem;
+}
+
+.blog-status {
+  margin: 2rem 0;
+  text-align: center;
+  color: #555;
 }
 
 .blog-card {

@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import SiteNav from '../components/home/SiteNav.vue'
 import AboutCard from '../components/home/AboutCard.vue'
-import ExperienceCard from '../components/home/ExperienceCard.vue'
 import TagsCard from '../components/home/PersonalCard.vue'
 import HobbiesCard from '../components/home/HobbiesCard.vue'
 
-const videoSrc = 'mp4/saber_profile.mp4'
+const videoSrc = `${import.meta.env.BASE_URL}mp4/saber_profile.mp4`
 </script>
 
 <template>
@@ -18,7 +17,7 @@ const videoSrc = 'mp4/saber_profile.mp4'
         muted
         loop
         playsinline
-        preload="auto"
+        preload="metadata"
       />
       <div class="video-bg__overlay" />
     </div>
