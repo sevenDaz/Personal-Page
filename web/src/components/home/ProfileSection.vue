@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const profileRows = [
   { label: '毕业院校', value: '中南民族大学' },
-  { label: '所在城市', value: '广州 佛山' },
+  { label: '所在城市', value: '广州 海珠' },
   { label: '年级', value: '24届毕业生' },
 ]
 
