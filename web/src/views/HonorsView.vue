@@ -3,7 +3,8 @@ import SiteNav from '../components/home/SiteNav.vue'
 import { ref, onMounted, onUnmounted } from 'vue'
 
 const baseUrl = import.meta.env.BASE_URL
-const videoSrc = `${baseUrl}mp4/subaru_honor.mp4`
+const videoSrc = `${baseUrl}mp4/subaru_honor.loop.mp4`
+const shouldLoadVideo = ref(false)
 
 const currentSlide = ref(0)
 const autoPlayInterval = ref()
@@ -77,6 +78,9 @@ const stopAutoPlay = () => {
 
 onMounted(() => {
   startAutoPlay()
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    window.setTimeout(() => { shouldLoadVideo.value = true }, 250)
+  }
 })
 
 onUnmounted(stopAutoPlay)
@@ -87,6 +91,7 @@ onUnmounted(stopAutoPlay)
     <div class="video-bg" aria-hidden="true">
       <video
         class="video-bg__media"
+        v-if="shouldLoadVideo"
         :src="videoSrc"
         autoplay
         muted
