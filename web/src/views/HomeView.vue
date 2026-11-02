@@ -4,7 +4,7 @@ import ProfileSection from '../components/home/ProfileSection.vue'
 import SiteNav from '../components/home/SiteNav.vue'
 import StatCards from '../components/home/StatCards.vue'
 
-const videoSrc = 'mp4/Fall_Ember.mp4'
+const videoSrc = `${import.meta.env.BASE_URL}mp4/Fall_Ember.mp4`
 </script>
 
 <template>
@@ -17,7 +17,7 @@ const videoSrc = 'mp4/Fall_Ember.mp4'
         muted
         loop
         playsinline
-        preload="auto"
+        preload="metadata"
       />
       <div class="video-bg__overlay" />
     </div>

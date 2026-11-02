@@ -5,7 +5,24 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
 import MarkdownIt from 'markdown-it'
-import hljs from 'highlight.js'
+import hljs from 'highlight.js/lib/core'
+import bash from 'highlight.js/lib/languages/bash'
+import css from 'highlight.js/lib/languages/css'
+import javascript from 'highlight.js/lib/languages/javascript'
+import json from 'highlight.js/lib/languages/json'
+import python from 'highlight.js/lib/languages/python'
+import sql from 'highlight.js/lib/languages/sql'
+import typescript from 'highlight.js/lib/languages/typescript'
+import xml from 'highlight.js/lib/languages/xml'
+
+hljs.registerLanguage('bash', bash)
+hljs.registerLanguage('css', css)
+hljs.registerLanguage('html', xml)
+hljs.registerLanguage('javascript', javascript)
+hljs.registerLanguage('json', json)
+hljs.registerLanguage('python', python)
+hljs.registerLanguage('sql', sql)
+hljs.registerLanguage('typescript', typescript)
 
 const props = defineProps<{
   content: string
@@ -14,7 +31,8 @@ const props = defineProps<{
 const renderedContent = ref('')
 
 const md: MarkdownIt = new MarkdownIt({
-  html: true,
+  // 博客内容来自静态 Markdown；禁用原始 HTML，避免未来编辑内容时引入 XSS。
+  html: false,
   linkify: true,
   typographer: true,
   breaks: true,

@@ -18,7 +18,7 @@
 - **前端框架**: Vue 3 + TypeScript
 - **构建工具**: Vite
 - **路由**: Vue Router
-- **样式**: CSS Modules + SCSS
+- **样式**: 原生 CSS（按页面和组件拆分）
 - **动画**: CSS Transitions
 - **响应式**: Flexbox + Grid
 
@@ -26,7 +26,7 @@
 
 ### 前置要求
 
-- Node.js (v16+)
+- Node.js 20.19+ 或 22.12+
 - npm 或 yarn 或 pnpm
 
 ### 安装步骤
@@ -35,10 +35,11 @@
 # 克隆项目
 git clone <your-repository-url>
 
-# 进入项目目录
+# 进入项目目录和前端子项目
 cd Personal-Page
+cd web
 
-# 安装依赖
+# 安装依赖（在 web/ 目录中执行）
 npm install  # 或 yarn install / pnpm install
 
 # 启动开发服务器
@@ -48,11 +49,21 @@ npm run dev  # 或 yarn dev / pnpm dev
 ### 构建生产版本
 
 ```bash
-# 构建生产版本
+# 构建生产版本（在 web/ 目录中执行）
 npm run build  # 或 yarn build / pnpm build
 
 # 预览生产版本
 npm run preview  # 或 yarn preview / pnpm preview
+```
+
+### 质量检查
+
+```bash
+# 仅检查，不修改文件
+npm run lint
+
+# 自动修复可修复的问题
+npm run lint:fix
 ```
 
 ## 项目结构
