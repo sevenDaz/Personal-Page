@@ -1,10 +1,18 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import HeroSection from '../components/home/HeroSection.vue'
 import ProfileSection from '../components/home/ProfileSection.vue'
 import SiteNav from '../components/home/SiteNav.vue'
 import StatCards from '../components/home/StatCards.vue'
 
-const videoSrc = `${import.meta.env.BASE_URL}mp4/Fall_Ember.mp4`
+const videoSrc = `${import.meta.env.BASE_URL}mp4/Fall_Ember.loop.mp4`
+const shouldLoadVideo = ref(false)
+
+onMounted(() => {
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    window.setTimeout(() => { shouldLoadVideo.value = true }, 250)
+  }
+})
 </script>
 
 <template>
@@ -12,6 +20,7 @@ const videoSrc = `${import.meta.env.BASE_URL}mp4/Fall_Ember.mp4`
     <div class="video-bg" aria-hidden="true">
       <video
         class="video-bg__media"
+        v-if="shouldLoadVideo"
         :src="videoSrc"
         autoplay
         muted

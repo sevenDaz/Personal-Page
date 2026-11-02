@@ -1,10 +1,18 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import SiteNav from '../components/home/SiteNav.vue'
 import AboutCard from '../components/home/AboutCard.vue'
 import TagsCard from '../components/home/PersonalCard.vue'
 import HobbiesCard from '../components/home/HobbiesCard.vue'
 
-const videoSrc = `${import.meta.env.BASE_URL}mp4/saber_profile.mp4`
+const videoSrc = `${import.meta.env.BASE_URL}mp4/saber_profile.loop.mp4`
+const shouldLoadVideo = ref(false)
+
+onMounted(() => {
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    window.setTimeout(() => { shouldLoadVideo.value = true }, 250)
+  }
+})
 </script>
 
 <template>
@@ -12,6 +20,7 @@ const videoSrc = `${import.meta.env.BASE_URL}mp4/saber_profile.mp4`
     <div class="video-bg" aria-hidden="true">
       <video
         class="video-bg__media"
+        v-if="shouldLoadVideo"
         :src="videoSrc"
         autoplay
         muted
